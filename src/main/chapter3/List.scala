@@ -32,4 +32,14 @@ object List {
         case Cons(_, tail) => drop(tail, n-1)
       }
   }
+
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Nil => Nil
+    case Cons(h, t) => if (f(h)) dropWhile(t, f) else l
+  }
+
+  def dropWhile2[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Cons(h, t) if f(h) => dropWhile(t, f)
+    case l => l
+  }
 }
