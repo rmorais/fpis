@@ -1,3 +1,6 @@
+import scala.annotation.tailrec
+import scala.collection.mutable
+
 /**
   * Created by rmorais on 15/11/2015.
   */
@@ -43,9 +46,23 @@ object List {
     case l => l
   }
 
+
+  //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
   def init[A](l: List[A]): List[A] = l match {
     case Nil => sys.error("Init of an empty list")
     case Cons(_, Nil) => Nil
     case Cons(h, t) => Cons(h, init(t))
+  }
+
+  def betterInit[A](l: List[A]): List[A] = {
+    val buffer = new mutable.ListBuffer[A]
+
+    @tailrec
+    def loop(list: List[A]): List[A] = list match {
+      case Nil => sys.error("Init of an empty list")
+      case Cons(_, Nil) => List(buffer.toList :_*)
+      case Cons(h, t) => buffer += h; loop(t)
+    }
+    loop(l)
   }
 }
