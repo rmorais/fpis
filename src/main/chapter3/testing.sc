@@ -1,0 +1,5 @@
+val l = List(1,2,3,4,5)
+List.drop(l, 1)
+List.drop(l, 4)
+List.drop(Nil, 1)
+List.drop(l, 0)

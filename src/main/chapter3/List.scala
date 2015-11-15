@@ -16,11 +16,20 @@ object List {
 
   def tail[A](l: List[A]): List[A] = l match {
     case Nil => Nil // We could also generate an error like: case Nil => sys.error("Tail of an empty list")
-    case Cons(_,xs) => xs
+    case Cons(_, xs) => xs
   }
 
   def setHead[A](head: A, l: List[A]): List[A] = l match {
     case Nil => sys.error("Cannot set the head of an empty list")
     case Cons(_, xs) => Cons(head, xs)
+  }
+
+  def drop[A](l: List[A], n: Int): List[A] = {
+    if (n <= 0) l
+    else
+      l match {
+        case Nil => Nil
+        case Cons(_, tail) => drop(tail, n-1)
+      }
   }
 }
