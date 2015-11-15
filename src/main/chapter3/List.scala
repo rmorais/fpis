@@ -15,7 +15,12 @@ object List {
       Cons(as.head, apply(as.tail: _*))
 
   def tail[A](l: List[A]): List[A] = l match {
-    case Nil => Nil // We could also generate an error like: Case Nil => sys.error("Tail of an empty list")
+    case Nil => Nil // We could also generate an error like: case Nil => sys.error("Tail of an empty list")
     case Cons(_,xs) => xs
+  }
+
+  def setHead[A](head: A, l: List[A]): List[A] = l match {
+    case Nil => sys.error("Cannot set the head of an empty list")
+    case Cons(_, xs) => Cons(head, xs)
   }
 }
