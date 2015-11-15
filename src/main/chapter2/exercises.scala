@@ -5,7 +5,7 @@ object exercises {
   def fib(n: Int): Int = {
     @tailrec
     def go(n: Int, previous: Int, current: Int): Int = {
-      if (n <= 1)
+      if (n == 0)
         previous
       else
         go(n - 1, current, previous + current)
@@ -24,5 +24,13 @@ object exercises {
         false
     }
     loop(0)
+  }
+
+  def partial1[A,B,C](a: A, f: (A,B) => C): B => C = {
+    b => f(a, b)
+  }
+
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) = {
+    a => b => f(a,b)
   }
 }
