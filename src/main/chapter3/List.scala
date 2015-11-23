@@ -27,6 +27,16 @@ object List {
     case Cons(_, xs) => Cons(head, xs)
   }
 
+  def sum(ints: List[Int]): Int = ints match {
+    case Nil => 0
+    case Cons(x, xs) => x + sum(xs)
+  }
+
+  def product(ints: List[Double]): Double = ints match {
+    case Nil => 1.0
+    case Cons(x, xs) => x * product(xs)
+  }
+
   def drop[A](l: List[A], n: Int): List[A] = {
     if (n <= 0) l
     else
@@ -65,4 +75,14 @@ object List {
     }
     loop(l)
   }
+
+  def foldRigh[A,B](as: List[A], z: B)(f: (A, B) => B): B =
+  as match {
+    case Nil => z
+    case Cons(x, xs) => f(x, foldRigh(xs, z)(f))
+  }
+
+  def sum2(as: List[Int]) = foldRigh(as, 0)((x,y) => x + y)
+
+  def product2(as: List[Double]) = foldRigh(as, 1.0)( _ * _)
 }
