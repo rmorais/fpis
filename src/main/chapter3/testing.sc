@@ -13,4 +13,5 @@ List.dropWhile2(l, (x: Int) => x < 3)
 List.dropWhile2(Nil, (x: Int) => x < 3)
 
 List.init(l)
-List.init(Nil)
+//List.init(Nil)
+List.lenght(l)

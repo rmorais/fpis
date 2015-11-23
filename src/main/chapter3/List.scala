@@ -85,4 +85,6 @@ object List {
   def sum2(as: List[Int]) = foldRigh(as, 0)((x,y) => x + y)
 
   def product2(as: List[Double]) = foldRigh(as, 1.0)( _ * _)
+
+  def lenght[A](as: List[A]) = foldRigh(as, 0)((_,acc) => 1 + acc)
 }
