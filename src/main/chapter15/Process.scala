@@ -1,6 +1,7 @@
-package main.chapter15
+
 
 sealed trait Process[I, O] {
+
   import Process._
 
   def apply(s: Stream[I]): Stream[O] = this match {
@@ -27,6 +28,9 @@ sealed trait Process[I, O] {
 }
 
 object Process {
+
+  case class Halt[I,O]() extends Process[I,O]
+
   case class Emit[I, O](
                          head: O,
                          tail: Process[I, O] = Halt[I, O]())
@@ -36,7 +40,6 @@ object Process {
                           recv: Option[I] => Process[I, O])
     extends Process[I, O]
 
-  case class Halt[I,O]() extends Process[I,O]
 
   def liftOne[I,O](f: I => O): Process[I,O] =
     Await {
@@ -59,6 +62,24 @@ object Process {
       case _ => Halt()
     }
     go(0.0)
+  }
+
+  def take[I](n: Int): Process[I,I] = {
+    def go(count: Int): Process[I,I] =
+    Await {
+      case Some(i) if count<n => Emit(i, go(count+1))
+      case _ => Halt()
+    }
+    go(0)
+  }
+
+  def count[I]: Process[I, Int] = {
+    def go(acc: Int): Process[I, Int] =
+    Await {
+      case Some(i) => Emit(acc, go(acc+1))
+      case _ => Halt()
+    }
+    go(1)
   }
 }
 

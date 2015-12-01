@@ -12,4 +12,10 @@ val evens = even(Stream(1,2,3,4)).toList
 
 val s = Process.sum(Stream(1.0, 2.0, 3.0, 4.0)).toList
 
+val f = Process.take(1)(Stream(1.0, 2.0, 3.0, 4.0)).toList
+
+val count = Process.count(Stream(1.0, 2.0, 3.0, 4.0, 6.0)).toList
+
+
+
 
