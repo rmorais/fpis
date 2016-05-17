@@ -29,8 +29,13 @@ object List {
   //We could also return Nil in the case of getting the tail of an empty list
   def tail[A](list: List[A]): List[A] = list match {
     case Nil => throw new NoSuchElementException
-    case Cons(x, xs) => xs
+    case Cons(_, xs) => xs
   }
 
+  def setHead[A](head: A, list: List[A]): List[A] = list match {
+    case Nil => sys.error("SetHead on empty list")
+    case Cons(_, xs) => Cons(head, xs)
+
+  }
 
 }
