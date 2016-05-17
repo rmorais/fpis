@@ -124,4 +124,7 @@ object List {
   /*
   we get back the original list
   */
+
+  //Exercise 3.9
+  def length[A](l: List[A]): Int = foldRight(l,0)((_,acc) => acc + 1)
 }

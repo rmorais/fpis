@@ -83,5 +83,17 @@ class ListTest extends FlatSpec with Matchers {
     List.init(multipleElemList) should be(List(1,2,3,4))
     List.init2(multipleElemList) should be(List(1,2,3,4))
   }
+
+  "length" should "return 0 when the list is empty" in {
+    List.length(Nil) should be (0)
+  }
+
+  it should "return 1 for a single element list" in {
+    List.length(singleElemList) should be (1)
+  }
+
+  it should "return the lenght of a multiple element list" in {
+    List.length(multipleElemList) should be (5)
+  }
 }
 

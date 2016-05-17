@@ -53,9 +53,8 @@ object List {
 
   def dropWhile2[A](l: List[A], f: A => Boolean): List[A] = l match {
     case Cons(h, t) if f(h) => dropWhile(t, f)
-    case l => l
+    case _ => l
   }
-
 
   //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
   def init[A](l: List[A]): List[A] = l match {
