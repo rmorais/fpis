@@ -26,6 +26,12 @@ object List {
     case Cons(x, xs) => x * product(xs)
   }
 
+  def append[A](a1: List[A], a2: List[A]): List[A] =
+    a1 match {
+      case Nil => a2
+      case Cons(x, xs) => Cons(x, append(xs, a2))
+    }
+
   //We could also return Nil in the case of getting the tail of an empty list
   def tail[A](list: List[A]): List[A] = list match {
     case Nil => throw new NoSuchElementException
@@ -53,4 +59,11 @@ object List {
       }
   }
 
+
+  //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => throw new NoSuchElementException("Init on an empty list")
+    case Cons(x, Nil) => Nil
+    case Cons(x, xs) => Cons(x, init(xs))
+  }
 }

@@ -67,5 +67,18 @@ class ListTest extends FlatSpec with Matchers {
     List.dropWhile(multipleElemList, (x: Int) => true) should be (Nil)
   }
 
+  "init" should "return an empty list when called with an empty list" in {
+    a [RuntimeException] should be thrownBy{
+      List.init(Nil)
+    }
+  }
+
+  it should "return an empty list when called with a single element list" in {
+    List.init(singleElemList) should be(Nil)
+  }
+
+  it should "return the same list without the last element when called with a multiple element list" in {
+    List.init(multipleElemList) should be(List(1,2,3,4))
+  }
 }
 
