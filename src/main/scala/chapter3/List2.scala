@@ -42,9 +42,15 @@ object List {
     if (n < 1) l
       else
     l match {
-    case Nil => sys.error("Drop on empty list")
-    case Cons(x, Nil) => Nil
+    case Nil => Nil
     case Cons(_, xs) => drop(xs, n-1)
+  }
+
+  def dropWhile[A](l: List[A], f : A => Boolean): List[A] = {
+      l match {
+        case Nil => Nil
+        case Cons(x, xs) => if (f(x)) dropWhile(xs, f) else l
+      }
   }
 
 }
