@@ -25,7 +25,7 @@ class ListTest extends FlatSpec with Matchers {
     List.tail(multipleElemList) should be (List(2,3,4,5))
   }
 
-  "setHead" should "throw NoSuchElementException if called on an empty list" in {
+  "setHead" should "throw RuntimeException if called on an empty list" in {
     a [RuntimeException] should be thrownBy{
       List.setHead(1, emptyList)
     }
@@ -34,6 +34,27 @@ class ListTest extends FlatSpec with Matchers {
   it should "replace the head of a non empty list" in {
     List.setHead(6, singleElemList) should be (List(6))
     List.setHead(6, multipleElemList) should be (List(6,2,3,4,5))
+  }
+
+  "drop" should "throw RuntimeException if called on an empty list" in {
+    a [RuntimeException] should be thrownBy List.drop(emptyList, 1)
+  }
+
+  it should "return an empty list if called with a single element list" in {
+    List.drop(singleElemList, 1) should be (Nil)
+  }
+
+  it should "return a list with the specified elements dropped" in {
+    List.drop(multipleElemList, 4) should be (List(5))
+  }
+
+  it should "return an empty list when requested to drop more elements than the list length" in {
+    List.drop(multipleElemList, 6) should be (Nil)
+  }
+
+  it should "return the same list when requested to drop less than one element" in {
+    List.drop(multipleElemList, 0) should be (multipleElemList)
+    List.drop(multipleElemList, -1) should be (multipleElemList)
   }
 }
 

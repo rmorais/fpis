@@ -38,4 +38,13 @@ object List {
 
   }
 
+  def drop[A](l: List[A], n: Int): List[A] =
+    if (n < 1) l
+      else
+    l match {
+    case Nil => sys.error("Drop on empty list")
+    case Cons(x, Nil) => Nil
+    case Cons(_, xs) => drop(xs, n-1)
+  }
+
 }
