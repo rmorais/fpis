@@ -32,18 +32,40 @@ object List {
       case Cons(x, xs) => Cons(x, append(xs, a2))
     }
 
+  //alternative implementation
+  def dropWhile2[A](l: List[A])(f : A => Boolean): List[A] = {
+    l match {
+      case Cons(x, xs) if f(x) => dropWhile2(xs)(f)
+      case _ => l
+    }
+  }
+
+  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = {
+    as match {
+      case Nil => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+  }
+
+  def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
+
+  def product2(ns: List[Double]) = foldRight(ns, 1.0)(_ * _)
+
+  //Exercise 3.2
   //We could also return Nil in the case of getting the tail of an empty list
   def tail[A](list: List[A]): List[A] = list match {
     case Nil => throw new NoSuchElementException
     case Cons(_, xs) => xs
   }
 
+  //Exercise 3.3
   def setHead[A](head: A, list: List[A]): List[A] = list match {
     case Nil => sys.error("SetHead on empty list")
     case Cons(_, xs) => Cons(head, xs)
 
   }
 
+  //Exercise 3.4
   def drop[A](l: List[A], n: Int): List[A] =
     if (n < 1) l
       else
@@ -52,6 +74,7 @@ object List {
     case Cons(_, xs) => drop(xs, n-1)
   }
 
+  //Exercise 3.5
   def dropWhile[A](l: List[A], f : A => Boolean): List[A] = {
       l match {
         case Nil => Nil
@@ -59,7 +82,7 @@ object List {
       }
   }
 
-
+  //Exercise 3.6
   //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
   def init[A](l: List[A]): List[A] = l match {
     case Nil => throw new NoSuchElementException("Init on an empty list")
