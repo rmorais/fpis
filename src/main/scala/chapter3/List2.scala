@@ -2,12 +2,16 @@ package chapter3
 
 import java.util.NoSuchElementException
 
+import scala.annotation.tailrec
+
 /**
   * Created by rmorais on 17/05/2016.
   */
 
 sealed trait List[+A]
+
 case object Nil extends List[Nothing]
+
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
@@ -33,7 +37,7 @@ object List {
     }
 
   //alternative implementation
-  def dropWhile2[A](l: List[A])(f : A => Boolean): List[A] = {
+  def dropWhile2[A](l: List[A])(f: A => Boolean): List[A] = {
     l match {
       case Cons(x, xs) if f(x) => dropWhile2(xs)(f)
       case _ => l
@@ -47,7 +51,7 @@ object List {
     }
   }
 
-  def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
+  def sum2(ns: List[Int]) = foldRight(ns, 0)((x, y) => x + y)
 
   def product2(ns: List[Double]) = foldRight(ns, 1.0)(_ * _)
 
@@ -68,18 +72,18 @@ object List {
   //Exercise 3.4
   def drop[A](l: List[A], n: Int): List[A] =
     if (n < 1) l
-      else
-    l match {
-    case Nil => Nil
-    case Cons(_, xs) => drop(xs, n-1)
-  }
-
-  //Exercise 3.5
-  def dropWhile[A](l: List[A], f : A => Boolean): List[A] = {
+    else
       l match {
         case Nil => Nil
-        case Cons(x, xs) => if (f(x)) dropWhile(xs, f) else l
+        case Cons(_, xs) => drop(xs, n - 1)
       }
+
+  //Exercise 3.5
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+    l match {
+      case Nil => Nil
+      case Cons(x, xs) => if (f(x)) dropWhile(xs, f) else l
+    }
   }
 
   //Exercise 3.6
@@ -96,8 +100,8 @@ object List {
     @annotation.tailrec
     def go(cur: List[A]): List[A] = cur match {
       case Nil => sys.error("init of empty list")
-      case Cons(_,Nil) => List(buf.toList: _*)
-      case Cons(h,t) => buf += h; go(t)
+      case Cons(_, Nil) => List(buf.toList: _*)
+      case Cons(h, t) => buf += h; go(t)
     }
     go(l)
   }
@@ -126,5 +130,13 @@ object List {
   */
 
   //Exercise 3.9
-  def length[A](l: List[A]): Int = foldRight(l,0)((_,acc) => acc + 1)
+  def length[A](l: List[A]): Int = foldRight(l, 0)((_, acc) => acc + 1)
+
+  //Exercise 3.10
+  @tailrec
+  def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B =
+    l match {
+      case Nil => z
+      case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    }
 }
