@@ -86,7 +86,42 @@ object List {
   //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
   def init[A](l: List[A]): List[A] = l match {
     case Nil => throw new NoSuchElementException("Init on an empty list")
-    case Cons(x, Nil) => Nil
+    case Cons(_, Nil) => Nil
     case Cons(x, xs) => Cons(x, init(xs))
   }
+
+  def init2[A](l: List[A]): List[A] = {
+    import collection.mutable.ListBuffer
+    val buf = new ListBuffer[A]
+    @annotation.tailrec
+    def go(cur: List[A]): List[A] = cur match {
+      case Nil => sys.error("init of empty list")
+      case Cons(_,Nil) => List(buf.toList: _*)
+      case Cons(h,t) => buf += h; go(t)
+    }
+    go(l)
+  }
+
+  /*
+  Note that we're copying the entire list up until the last element. Besides being inefficient, the natural recursive
+  solution will use a stack frame for each element of the list, which can lead to stack overflows for
+  large lists (can you see why?). With lists, it's common to use a temporary, mutable buffer internal to the
+  function (with lazy lists or streams, which we discuss in chapter 5, we don't normally do this). So long as the
+  buffer is allocated internal to the function, the mutation is not observable and RT is preserved.
+  Another common convention is to accumulate the output list in reverse order, then reverse it at the end, which
+  doesn't require even local mutation. We'll write a reverse function later in this chapter.
+  */
+
+
+  //Exercise 3.7
+  /*
+  No, this is not possible! The reason is because _before_ we ever call our function, `f`, we evaluate its argument,
+  which in the case of `foldRight` means traversing the list all the way to the end. We need _non-strict_ evaluation
+  to support early termination---we discuss this in chapter 5.
+  */
+
+  //Exercise 3.8
+  /*
+  we get back the original list
+  */
 }

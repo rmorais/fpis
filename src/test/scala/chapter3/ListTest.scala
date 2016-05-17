@@ -70,15 +70,18 @@ class ListTest extends FlatSpec with Matchers {
   "init" should "return an empty list when called with an empty list" in {
     a [RuntimeException] should be thrownBy{
       List.init(Nil)
+      List.init2(Nil)
     }
   }
 
   it should "return an empty list when called with a single element list" in {
     List.init(singleElemList) should be(Nil)
+    List.init2(singleElemList) should be(Nil)
   }
 
   it should "return the same list without the last element when called with a multiple element list" in {
     List.init(multipleElemList) should be(List(1,2,3,4))
+    List.init2(multipleElemList) should be(List(1,2,3,4))
   }
 }
 
