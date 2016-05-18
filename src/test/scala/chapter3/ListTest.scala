@@ -177,6 +177,8 @@ class ListTest extends FlatSpec with Matchers {
   "filter" should "remove the elements of the list unless they satisfy the given condition" in {
     List.filter(List[Int]())(_ < 4) should be (Nil)
     List.filter(multipleElemList)(_ < 4) should be (List(1,2,3))
+    List.filterViaFlatMap(List[Int]())(_ < 4) should be (Nil)
+    List.filterViaFlatMap(multipleElemList)(_ < 4) should be (List(1,2,3))
   }
 
   it should "return an empty list, given none of the elements satisfy the given condition" in {
