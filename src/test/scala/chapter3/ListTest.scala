@@ -92,8 +92,37 @@ class ListTest extends FlatSpec with Matchers {
     List.length(singleElemList) should be (1)
   }
 
-  it should "return the lenght of a multiple element list" in {
+  it should "return the length of a multiple element list" in {
     List.length(multipleElemList) should be (5)
+  }
+
+  "sum3" should "return 0 when list is empty" in {
+    List.sum3(Nil) should be (0)
+  }
+  it should "return the sum of all elements of the list" in {
+    List.sum3(singleElemList) should be (1)
+    List.sum3(multipleElemList) should be (15)
+  }
+
+  "product3" should "return 1 when the list is empty" in {
+    List.product3(Nil) should be (1.0)
+  }
+
+  it should "return the product of all elements of the list" in {
+    List.product3(List(2)) should be (2)
+    List.product3(List(1,2,3,4,5)) should be (120)
+  }
+
+  "length2" should "return 0 when the list is empty" in {
+    List.length2(Nil) should be (0)
+  }
+
+  it should "return 1 for a single element list" in {
+    List.length2(singleElemList) should be (1)
+  }
+
+  it should "return the length of a multiple element list" in {
+    List.length2(multipleElemList) should be (5)
   }
 }
 
