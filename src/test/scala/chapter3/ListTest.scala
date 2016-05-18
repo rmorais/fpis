@@ -197,5 +197,25 @@ class ListTest extends FlatSpec with Matchers {
   "zipWith" should "add the elements of both lists and return a single list with the result" in {
     List.zipWith(List(1,2,3), List(4,5,6))(_ + _) should be (List(5,7,9))
   }
+
+  "hasSubsequence" should "return false if the list empty" in {
+    List.hasSubsequence(Nil, List(1,2)) should be (false)
+    List.hasSubsequence2(Nil, List(1,2)) should be (false)
+  }
+
+  it should "return true if the subsequence is the empty list" in {
+    List.hasSubsequence(multipleElemList, Nil) should be (true)
+    List.hasSubsequence2(multipleElemList, Nil) should be (true)
+  }
+
+  it should "return true if the list is a subsequence of the other list" in {
+    List.hasSubsequence(multipleElemList, multipleElemList) should be (true)
+    List.hasSubsequence(multipleElemList, List(1,2)) should be (true)
+    List.hasSubsequence(multipleElemList, List(4,5)) should be (true)
+
+    List.hasSubsequence2(multipleElemList, multipleElemList) should be (true)
+    List.hasSubsequence2(multipleElemList, List(1,2)) should be (true)
+    List.hasSubsequence2(multipleElemList, List(4,5)) should be (true)
+  }
 }
 
