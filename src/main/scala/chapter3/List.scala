@@ -186,4 +186,7 @@ object List {
   //Exercise 3.16
   def add1(l: List[Int]): List[Int] = foldRight(l, List[Int]())((h, acc) => Cons(h + 1, acc))
 
+  //Exercise 3.17
+  def doubleToString(l: List[Double]): List[String] = foldRight(l, List[String]())((h, acc) => Cons(h.toString, acc))
+
 }

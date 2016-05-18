@@ -152,5 +152,9 @@ class ListTest extends FlatSpec with Matchers {
     List.add1(singleElemList) should be(List(2))
     List.add1(multipleElemList) should be ( List(2,3,4,5,6))
   }
+
+  "doubleToString" should "convert all doubles inside a list into a list of strings" in {
+    List.doubleToString(List(1,2,3,4,5)) should be (List("1.0", "2.0", "3.0", "4.0","5.0"))
+  }
 }
 
