@@ -239,4 +239,13 @@ object List {
   def filterViaFlatMap[A](l: List[A])(f: A => Boolean): List[A] = {
     flatMap(l)(a => if (f(a)) List(a) else Nil)
   }
+
+  //Exercise 3.22
+  def addPairWise(l1: List[Int], l2: List[Int]): List[Int] = {
+    (l1,l2) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(x, xs), Cons(y, ys)) => Cons(x + y, addPairWise(xs, ys))
+    }
+  }
 }

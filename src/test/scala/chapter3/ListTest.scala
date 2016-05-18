@@ -189,5 +189,9 @@ class ListTest extends FlatSpec with Matchers {
     List.flatMap(List(1,2,3))(i => List(i,i)) should be (List(1,1,2,2,3,3))
     List.flatMap2(List(1,2,3))(i => List(i,i)) should be (List(1,1,2,2,3,3))
   }
+
+  "addPairWise" should "add the elements of both lists and return a single list with the result" in {
+    List.addPairWise(List(1,2,3), List(4,5,6)) should be (List(5,7,9))
+  }
 }
 
