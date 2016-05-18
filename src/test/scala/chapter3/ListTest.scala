@@ -156,5 +156,22 @@ class ListTest extends FlatSpec with Matchers {
   "doubleToString" should "convert all doubles inside a list into a list of strings" in {
     List.doubleToString(List(1,2,3,4,5)) should be (List("1.0", "2.0", "3.0", "4.0","5.0"))
   }
+
+  "map" should "return an empty list in case of empty list" in {
+    List.map(emptyList)(_.toString) should be(Nil)
+    List.map2(emptyList)(_.toString) should be(Nil)
+    List.map3(emptyList)(_.toString) should be(Nil)
+    List.map4(emptyList)(_.toString) should be(Nil)
+  }
+  it should "apply the function to all elements of the list and return a mapped list" in {
+    List.map(singleElemList)(_.toString) should be(List("1"))
+    List.map(multipleElemList)(_ + 1) should be (List(2,3,4,5,6))
+    List.map2(singleElemList)(_.toString) should be(List("1"))
+    List.map2(multipleElemList)(_ + 1) should be (List(2,3,4,5,6))
+    List.map3(singleElemList)(_.toString) should be(List("1"))
+    List.map3(multipleElemList)(_ + 1) should be (List(2,3,4,5,6))
+    List.map4(singleElemList)(_.toString) should be(List("1"))
+    List.map4(multipleElemList)(_ + 1) should be (List(2,3,4,5,6))
+  }
 }
 

@@ -189,4 +189,31 @@ object List {
   //Exercise 3.17
   def doubleToString(l: List[Double]): List[String] = foldRight(l, List[String]())((h, acc) => Cons(h.toString, acc))
 
+  //Exercise 3.18
+  /*
+  A natural solution is using `foldRight`, but our implementation of `foldRight` is not stack-safe. We can
+  use `foldRightViaFoldLeft` to avoid the stack overflow (variation 1), but more commonly, with our current
+  implementation of `List`, `map` will just be implemented using local mutation (variation 2). Again, note that the
+  mutation isn't observable outside the function, since we're only mutating a buffer that we've allocated.
+  */
+  def map[A,B](l: List[A])(f: A => B): List[B] = l match {
+    case Nil => Nil
+    case Cons(x, xs) => Cons(f(x), map(xs)(f))
+  }
+
+  def map2[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, List[B]())((h, acc) => Cons(f(h), acc))
+
+  def map3[A,B](l: List[A])(f: A => B): List[B] = foldRightViaFoldLeft(l, List[B]())((h, acc) => Cons(f(h), acc))
+
+  def map4[A,B](l: List[A])(f: A => B): List[B] = {
+    import collection.mutable.ListBuffer
+    val buf = new ListBuffer[B]
+    @tailrec
+    def go(l: List[A]): List[B] = l match {
+      case Nil => Nil
+      case Cons(x, xs) => buf += f(x); go(xs)
+    }
+    go(l)
+    List(buf: _*)
+  }
 }
