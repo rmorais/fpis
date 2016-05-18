@@ -248,4 +248,13 @@ object List {
       case (Cons(x, xs), Cons(y, ys)) => Cons(x + y, addPairWise(xs, ys))
     }
   }
+
+  //Exercise 3.23
+  def zipWith[A,B,C](l1: List[A], l2: List[B])(f:(A, B) => C): List[C] = {
+    (l1, l2) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(x, xs), Cons(y, ys)) => Cons(f(x, y), zipWith(xs, ys)(f))
+    }
+  }
 }

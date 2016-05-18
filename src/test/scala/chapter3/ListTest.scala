@@ -193,5 +193,9 @@ class ListTest extends FlatSpec with Matchers {
   "addPairWise" should "add the elements of both lists and return a single list with the result" in {
     List.addPairWise(List(1,2,3), List(4,5,6)) should be (List(5,7,9))
   }
+
+  "zipWith" should "add the elements of both lists and return a single list with the result" in {
+    List.zipWith(List(1,2,3), List(4,5,6))(_ + _) should be (List(5,7,9))
+  }
 }
 
