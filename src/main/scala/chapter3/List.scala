@@ -1,8 +1,11 @@
+package chapter3
+
+import java.util.NoSuchElementException
+
 import scala.annotation.tailrec
-import scala.collection.mutable
 
 /**
-  * Created by rmorais on 15/11/2015.
+  * Created by rmorais on 17/05/2016.
   */
 
 sealed trait List[+A]
@@ -12,20 +15,10 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
+
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
-    else
-      Cons(as.head, apply(as.tail: _*))
-
-  def tail[A](l: List[A]): List[A] = l match {
-    case Nil => Nil // We could also generate an error like: case Nil => sys.error("Tail of an empty list")
-    case Cons(_, xs) => xs
-  }
-
-  def setHead[A](head: A, l: List[A]): List[A] = l match {
-    case Nil => sys.error("Cannot set the head of an empty list")
-    case Cons(_, xs) => Cons(head, xs)
-  }
+    else Cons(as.head, apply(as.tail: _*))
 
   def sum(ints: List[Int]): Int = ints match {
     case Nil => 0
@@ -37,53 +30,113 @@ object List {
     case Cons(x, xs) => x * product(xs)
   }
 
-  def drop[A](l: List[A], n: Int): List[A] = {
-    if (n <= 0) l
+  def append[A](a1: List[A], a2: List[A]): List[A] =
+    a1 match {
+      case Nil => a2
+      case Cons(x, xs) => Cons(x, append(xs, a2))
+    }
+
+  //alternative implementation
+  def dropWhile2[A](l: List[A])(f: A => Boolean): List[A] = {
+    l match {
+      case Cons(x, xs) if f(x) => dropWhile2(xs)(f)
+      case _ => l
+    }
+  }
+
+  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = {
+    as match {
+      case Nil => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+  }
+
+  def sum2(ns: List[Int]) = foldRight(ns, 0)((x, y) => x + y)
+
+  def product2(ns: List[Double]) = foldRight(ns, 1.0)(_ * _)
+
+  //Exercise 3.2
+  //We could also return Nil in the case of getting the tail of an empty list
+  def tail[A](list: List[A]): List[A] = list match {
+    case Nil => throw new NoSuchElementException
+    case Cons(_, xs) => xs
+  }
+
+  //Exercise 3.3
+  def setHead[A](head: A, list: List[A]): List[A] = list match {
+    case Nil => sys.error("SetHead on empty list")
+    case Cons(_, xs) => Cons(head, xs)
+
+  }
+
+  //Exercise 3.4
+  def drop[A](l: List[A], n: Int): List[A] =
+    if (n < 1) l
     else
       l match {
         case Nil => Nil
-        case Cons(_, tail) => drop(tail, n-1)
+        case Cons(_, xs) => drop(xs, n - 1)
       }
+
+  //Exercise 3.5
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
+    l match {
+      case Nil => Nil
+      case Cons(x, xs) => if (f(x)) dropWhile(xs, f) else l
+    }
   }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case Nil => Nil
-    case Cons(h, t) => if (f(h)) dropWhile(t, f) else l
-  }
-
-  def dropWhile2[A](l: List[A], f: A => Boolean): List[A] = l match {
-    case Cons(h, t) if f(h) => dropWhile(t, f)
-    case _ => l
-  }
-
+  //Exercise 3.6
   //This method uses a stack frame for each list element, which might led to a stackoverflow if the list is big enough
   def init[A](l: List[A]): List[A] = l match {
-    case Nil => sys.error("Init of an empty list")
+    case Nil => throw new NoSuchElementException("Init on an empty list")
     case Cons(_, Nil) => Nil
-    case Cons(h, t) => Cons(h, init(t))
+    case Cons(x, xs) => Cons(x, init(xs))
   }
 
-  def betterInit[A](l: List[A]): List[A] = {
-    val buffer = new mutable.ListBuffer[A]
-
-    @tailrec
-    def loop(list: List[A]): List[A] = list match {
-      case Nil => sys.error("Init of an empty list")
-      case Cons(_, Nil) => List(buffer.toList :_*)
-      case Cons(h, t) => buffer += h; loop(t)
+  def init2[A](l: List[A]): List[A] = {
+    import collection.mutable.ListBuffer
+    val buf = new ListBuffer[A]
+    @annotation.tailrec
+    def go(cur: List[A]): List[A] = cur match {
+      case Nil => sys.error("init of empty list")
+      case Cons(_, Nil) => List(buf.toList: _*)
+      case Cons(h, t) => buf += h; go(t)
     }
-    loop(l)
+    go(l)
   }
 
-  def foldRigh[A,B](as: List[A], z: B)(f: (A, B) => B): B =
-  as match {
-    case Nil => z
-    case Cons(x, xs) => f(x, foldRigh(xs, z)(f))
-  }
+  /*
+  Note that we're copying the entire list up until the last element. Besides being inefficient, the natural recursive
+  solution will use a stack frame for each element of the list, which can lead to stack overflows for
+  large lists (can you see why?). With lists, it's common to use a temporary, mutable buffer internal to the
+  function (with lazy lists or streams, which we discuss in chapter 5, we don't normally do this). So long as the
+  buffer is allocated internal to the function, the mutation is not observable and RT is preserved.
+  Another common convention is to accumulate the output list in reverse order, then reverse it at the end, which
+  doesn't require even local mutation. We'll write a reverse function later in this chapter.
+  */
 
-  def sum2(as: List[Int]) = foldRigh(as, 0)((x,y) => x + y)
 
-  def product2(as: List[Double]) = foldRigh(as, 1.0)( _ * _)
+  //Exercise 3.7
+  /*
+  No, this is not possible! The reason is because _before_ we ever call our function, `f`, we evaluate its argument,
+  which in the case of `foldRight` means traversing the list all the way to the end. We need _non-strict_ evaluation
+  to support early termination---we discuss this in chapter 5.
+  */
 
-  def lenght[A](as: List[A]) = foldRigh(as, 0)((_,acc) => 1 + acc)
+  //Exercise 3.8
+  /*
+  we get back the original list
+  */
+
+  //Exercise 3.9
+  def length[A](l: List[A]): Int = foldRight(l, 0)((_, acc) => acc + 1)
+
+  //Exercise 3.10
+  @tailrec
+  def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B =
+    l match {
+      case Nil => z
+      case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    }
 }
