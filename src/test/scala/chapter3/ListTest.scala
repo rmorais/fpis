@@ -130,5 +130,17 @@ class ListTest extends FlatSpec with Matchers {
     List.reverse(singleElemList) should be(singleElemList)
     List.reverse(multipleElemList) should be(List(5,4,3,2,1))
   }
+
+  "appendViaFoldRight" should "return a list containing the two lists appended" in {
+    List.appendViaFoldRight(Nil, singleElemList) should be(List(1))
+    List.appendViaFoldRight(singleElemList, Nil) should be(List(1))
+    List.appendViaFoldRight(multipleElemList, singleElemList) should be(List(1,2,3,4,5,1))
+  }
+
+  "appendViaFoldLeft" should "return a list containing the two lists appended" in {
+    List.appendViaFoldLeft(Nil, singleElemList) should be(List(1))
+    List.appendViaFoldLeft(singleElemList, Nil) should be(List(1))
+    List.appendViaFoldLeft(multipleElemList, singleElemList) should be(List(1,2,3,4,5,1))
+  }
 }
 

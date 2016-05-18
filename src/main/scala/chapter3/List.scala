@@ -164,5 +164,9 @@ object List {
     foldRight(l, (b:B) => b)((a,g) => b => g(f(b,a)))(z)
   }
 
+  def appendViaFoldRight[A](a1: List[A], a2: List[A]): List[A] = foldRight(a1, a2)(Cons(_, _))
+
+  def appendViaFoldLeft[A](a1: List[A], a2: List[A]): List[A] = foldLeft(reverse(a1), a2)((acc, h) => Cons(h, acc))
+
 
 }
