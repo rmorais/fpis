@@ -30,4 +30,16 @@ class TreeTest extends FlatSpec with Matchers {
     Tree.maximum(Branch(Branch(Leaf(1), Leaf(3)), Leaf(2))) should be(3)
     Tree.maximum(Branch(Branch(Leaf(1), Leaf(3)), Branch(Leaf(2), Leaf(100)))) should be(100)
   }
+
+  "depth" should "return 0 given the tree only has one leaf" in {
+    val tree = Leaf(1)
+    Tree.depth(tree) should be(0)
+   }
+
+  it should "return the depth of the tree" in {
+    Tree.depth(Branch(Leaf(1), Leaf(2))) should be(1)
+    Tree.depth(Branch(Branch(Leaf(1), Leaf(3)), Leaf(2))) should be(2)
+    Tree.depth(Branch(Branch(Leaf(1), Leaf(3)), Branch(Leaf(2), Leaf(100)))) should be(2)
+    Tree.depth(Branch(Branch(Branch(Leaf(1), Leaf(3)), Leaf(3)), Branch(Leaf(2), Leaf(100)))) should be(3)
+  }
 }
