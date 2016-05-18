@@ -229,4 +229,9 @@ object List {
     go(l)
     List(buf: _*)
   }
+
+  //Exercise 3.20
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = foldLeft(l, List[B]())((acc, h) => append(acc, f(h)))
+
+  def flatMap2[A,B](l: List[A])(f: A => List[B]): List[B] = concat(map(l)(f))
 }

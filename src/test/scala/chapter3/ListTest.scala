@@ -182,5 +182,10 @@ class ListTest extends FlatSpec with Matchers {
   it should "return an empty list, given none of the elements satisfy the given condition" in {
     List.filter(singleElemList)(_ > 4) should be (Nil)
   }
+
+  "flatMap" should "return a list with the function applied to every element of the list provided" in {
+    List.flatMap(List(1,2,3))(i => List(i,i)) should be (List(1,1,2,2,3,3))
+    List.flatMap2(List(1,2,3))(i => List(i,i)) should be (List(1,1,2,2,3,3))
+  }
 }
 
