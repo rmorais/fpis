@@ -146,5 +146,11 @@ class ListTest extends FlatSpec with Matchers {
   "concat" should "return all the lists concatenated into a single list" in {
     List.concat(List(List(1,2), List(3,4))) should be(List(1,2,3,4))
   }
+
+  "add1" should "return all the elements in list incremented by 1" in {
+    List.add1(emptyList) should be (Nil)
+    List.add1(singleElemList) should be(List(2))
+    List.add1(multipleElemList) should be ( List(2,3,4,5,6))
+  }
 }
 
