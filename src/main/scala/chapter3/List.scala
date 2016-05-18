@@ -216,4 +216,17 @@ object List {
     go(l)
     List(buf: _*)
   }
+
+  //Exercise 3.19
+  def filter[A](l: List[A])(f: A => Boolean): List[A] = {
+    import collection.mutable.ListBuffer
+    val buf = new ListBuffer[A]
+    @tailrec
+    def go(l: List[A]): List[A] = l match {
+      case Nil => Nil
+      case Cons(x, xs) => if (f(x)) buf += x; go(xs)
+    }
+    go(l)
+    List(buf: _*)
+  }
 }

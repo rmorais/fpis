@@ -173,5 +173,14 @@ class ListTest extends FlatSpec with Matchers {
     List.map4(singleElemList)(_.toString) should be(List("1"))
     List.map4(multipleElemList)(_ + 1) should be (List(2,3,4,5,6))
   }
+
+  "filter" should "remove the elements of the list unless they satisfy the given condition" in {
+    List.filter(List[Int]())(_ < 4) should be (Nil)
+    List.filter(multipleElemList)(_ < 4) should be (List(1,2,3))
+  }
+
+  it should "return an empty list, given none of the elements satisfy the given condition" in {
+    List.filter(singleElemList)(_ > 4) should be (Nil)
+  }
 }
 
