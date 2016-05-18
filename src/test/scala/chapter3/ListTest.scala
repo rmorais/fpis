@@ -124,5 +124,11 @@ class ListTest extends FlatSpec with Matchers {
   it should "return the length of a multiple element list" in {
     List.length2(multipleElemList) should be (5)
   }
+
+  "reverse" should "return a list with it's elements in reverse order" in {
+    List.reverse(emptyList) should be(Nil)
+    List.reverse(singleElemList) should be(singleElemList)
+    List.reverse(multipleElemList) should be(List(5,4,3,2,1))
+  }
 }
 
