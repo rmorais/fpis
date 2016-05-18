@@ -142,5 +142,9 @@ class ListTest extends FlatSpec with Matchers {
     List.appendViaFoldLeft(singleElemList, Nil) should be(List(1))
     List.appendViaFoldLeft(multipleElemList, singleElemList) should be(List(1,2,3,4,5,1))
   }
+
+  "concat" should "return all the lists concatenated into a single list" in {
+    List.concat(List(List(1,2), List(3,4))) should be(List(1,2,3,4))
+  }
 }
 
