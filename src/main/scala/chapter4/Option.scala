@@ -12,7 +12,7 @@ trait Option[+A] {
     }
   }
 
-  def getOrElse[B >: A](default : => B): B = {
+  def getOrElse[B >: A](default: => B): B = {
     this match {
       case None => default
       case Some(v) => v
@@ -28,9 +28,9 @@ trait Option[+A] {
     }
   }
 
-  def orElse[B >: A](default : => Option[B]): Option[B] = this map (Some(_)) getOrElse default
+  def orElse[B >: A](default: => Option[B]): Option[B] = this map (Some(_)) getOrElse default
 
-  def orElse2[B >: A](default : => Option[B]): Option[B] = {
+  def orElse2[B >: A](default: => Option[B]): Option[B] = {
     this match {
       case None => default
       case o => o
@@ -49,3 +49,18 @@ trait Option[+A] {
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
+
+object test {
+
+  def mean(xs: Seq[Double]): Option[Double] = {
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
+  }
+
+  def variance(xs: Seq[Double]): Option[Double] = {
+    mean(xs) flatMap {
+      m =>
+        mean(xs map (x => math.pow(x - m, 2)))
+    }
+  }
+}
