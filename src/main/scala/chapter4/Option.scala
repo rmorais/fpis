@@ -50,7 +50,7 @@ trait Option[+A] {
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
-object test {
+object Option {
 
   def mean(xs: Seq[Double]): Option[Double] = {
     if (xs.isEmpty) None
@@ -63,4 +63,9 @@ object test {
         mean(xs map (x => math.pow(x - m, 2)))
     }
   }
+
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A,B) => C): Option[C] = {
+    a flatMap (a1 => b map(b1 => f(a1,b1)))
+  }
+
 }
