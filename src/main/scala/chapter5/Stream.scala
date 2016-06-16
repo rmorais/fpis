@@ -14,6 +14,22 @@ sealed trait Stream[+A] {
     case Cons(h, t) => Option(h())
   }
 
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = {
+    this match {
+      case Cons(h,t) => f(h(), t().foldRight(z)(f))
+      case _ => z
+    }
+  }
+
+  def existsRecursive(p: A => Boolean): Boolean = this match {
+    case Cons(h,t) => p(h()) || t().existsRecursive(p)
+    case _ => false
+  }
+
+  def exists(p: A => Boolean): Boolean =
+    foldRight(false)((a,b)=> p(a) || b)
+
+
   //Not tail recursive so it might give a stack overflow for large streams
   def toListNaive: List[A] = this match {
     case Empty => Nil
@@ -65,6 +81,9 @@ still _pure_.
     case Cons(h, t) if p(h()) => cons(h(), t() takeWhile p)
     case _ => Empty
   }
+
+  def forAll(p: A => Boolean): Boolean =
+    foldRight(true)((a,b)=> p(a) && b)
 
 }
 

@@ -40,4 +40,11 @@ class StreamTest extends FlatSpec with Matchers {
     Stream(1 to 1000 : _*).takeWhile(_ < 10).toList should be(Stream(1 until 10: _*).toList)
   }
 
+  "forAll" should "return true if all elements in the stream respect the predicate" in {
+    Stream(1 to 1000 : _*).forAll(_ < 10000) should be(true)
+  }
+
+  it should "return false if one element in the stream doesn't respect the predicate" in {
+    Stream(1 to 10 : _*).forAll(_ == 10000) should be(false)
+  }
 }
