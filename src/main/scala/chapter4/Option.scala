@@ -85,9 +85,9 @@ object Option {
 
   //Exercise 4.5
   //naive implementation that looks at list twice
-  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
-    sequence (a map f)
-  }
+//  def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+//    sequence (a map f)
+//  }
 
   def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
     a match {
