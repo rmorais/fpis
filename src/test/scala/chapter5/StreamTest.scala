@@ -32,4 +32,12 @@ class StreamTest extends FlatSpec with Matchers {
     Stream(1 to 10 : _*).drop(20) should be(Empty)
   }
 
+  "takeWhile" should "return empty stream if predicate is false" in {
+    Stream(1 to 1000 : _*).takeWhile(_ => false) should be(Empty)
+  }
+
+  it should "return the first elements that verify the predicate" in {
+    Stream(1 to 1000 : _*).takeWhile(_ < 10).toList should be(Stream(1 until 10: _*).toList)
+  }
+
 }

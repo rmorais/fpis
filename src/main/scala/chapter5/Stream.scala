@@ -5,8 +5,10 @@ package chapter5
   */
 
 import scala.{Stream => _}
+import Stream._
 
 sealed trait Stream[+A] {
+
   def headOption: Option[A] = this match {
     case Empty => None
     case Cons(h, t) => Option(h())
@@ -49,14 +51,19 @@ still _pure_.
   }
 
   def take(n: Int): Stream[A] = this match {
-    case Cons(h, t) if n > 1 => Stream.cons(h(), t().take(n - 1))
-    case Cons(h, _) if n == 1 => Stream.cons(h(), Empty)
+    case Cons(h, t) if n > 1 => cons(h(), t().take(n - 1))
+    case Cons(h, _) if n == 1 => cons(h(), Empty)
     case _ => Empty
   }
 
   def drop(n: Int): Stream[A] = this match {
     case Cons(_, t) if n > 0 => t().drop(n - 1)
     case _ => this
+  }
+
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if p(h()) => cons(h(), t() takeWhile p)
+    case _ => Empty
   }
 
 }
